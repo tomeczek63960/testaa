@@ -5,9 +5,11 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     console.log("WEBHOOK BODY:", JSON.stringify(body, null, 2));
+    const secret = req.headers.get("x-webhook-secret");
+
+    console.log(secret, process.env.STORYBLOK_WEBHOOK_SECRET, '------')
 
     // 1. Verify secret
-    const secret = req.headers.get("x-webhook-secret");
     if (secret !== process.env.STORYBLOK_WEBHOOK_SECRET) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
