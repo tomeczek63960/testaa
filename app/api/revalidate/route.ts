@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
+    console.log("WEBHOOK BODY:", JSON.stringify(body, null, 2));
 
     // 1. Verify secret
     const secret = req.headers.get("x-webhook-secret");
