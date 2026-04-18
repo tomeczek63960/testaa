@@ -5,9 +5,8 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     console.log("WEBHOOK BODY:", JSON.stringify(body, null, 2));
-    const secret = req.headers.get("x-webhook-secret");
+    // const secret = req.headers.get("x-webhook-secret");
 
-    console.log(secret, process.env.STORYBLOK_WEBHOOK_SECRET, '------')
 
     // 1. Verify secret
     // if (secret !== process.env.STORYBLOK_WEBHOOK_SECRET) {
@@ -15,7 +14,8 @@ export async function POST(req: NextRequest) {
     // }
 
     // 2. Extract slug from Storyblok payload
-    const slug = body.story?.full_slug;
+    const slug = body?.full_slug;
+    console.log('---slug', slug)
 
     if (!slug) {
       return NextResponse.json({ message: "No slug provided" }, { status: 400 });
