@@ -10,9 +10,9 @@ export async function POST(req: NextRequest) {
     console.log(secret, process.env.STORYBLOK_WEBHOOK_SECRET, '------')
 
     // 1. Verify secret
-    if (secret !== process.env.STORYBLOK_WEBHOOK_SECRET) {
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-    }
+    // if (secret !== process.env.STORYBLOK_WEBHOOK_SECRET) {
+    //   return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    // }
 
     // 2. Extract slug from Storyblok payload
     const slug = body.story?.full_slug;
