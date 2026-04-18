@@ -2,7 +2,7 @@ import { getStoryblokApi } from '../lib/storyblok';
 import { StoryblokStory } from '@storyblok/react/rsc';
 import { notFound } from 'next/navigation';
 
-export const revalidate = false;
+export const revalidate = 60;
 // eslint-disable-next-line
 export default async function Page({ params }: any) {
   const { slug } = await params;
