@@ -7,7 +7,6 @@ export default async function Home() {
 
   return (
     <div className="page">
-      <h1>here test page.tsx under index</h1>
       <StoryblokStory story={data.story} />
     </div>
   );

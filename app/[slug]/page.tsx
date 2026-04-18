@@ -12,7 +12,6 @@ export default async function Page({ params }: any) {
   if (!data?.story) return notFound();
 
   return <>
-    <h1>here is nested page</h1>
     <StoryblokStory story={data.story} />
   </>
 }
