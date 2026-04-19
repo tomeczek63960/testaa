@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 export async function POST(req: NextRequest) {
   try {
@@ -26,8 +26,9 @@ export async function POST(req: NextRequest) {
     const path = slug === "home" ? "/" : `/${slug}`;
 
 
-    // 4. Revalidate only this page
+    // 4. Revalidate the page route and Storyblok data cache
     revalidatePath(path);
+    revalidateTag('storyblok', { expire: 0 });
 
     return NextResponse.json({ revalidated: true, path });
   } catch (err) {

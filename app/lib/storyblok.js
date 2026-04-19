@@ -23,5 +23,12 @@ export const getStoryblokApi = storyblokInit({
   },
   apiOptions: {
     region: 'eu',
+    fetch: (url, options) => {
+      return fetch(url, {
+        ...options,
+        cache: 'force-cache',
+        next: { tags: ['storyblok'] },
+      });
+    },
   },
 });
