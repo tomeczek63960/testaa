@@ -28,16 +28,12 @@ export async function POST(req: NextRequest) {
     const path = slug === "home" ? "/" : `/${slug}`;
 
 
-    // 4. Revalidate the page route and Storyblok data cache
-    revalidatePath(path, 'page');
-    revalidatePath(path, 'layout');
-    revalidateTag('storyblok', { expire: 0 });
-
-    // Also revalidate specific page tag
+    // 4. Revalidate only the specific page
     const pageTag = slug === 'home' ? 'storyblok-home' : `storyblok-${slug}`;
+    revalidatePath(path, 'page');
     revalidateTag(pageTag, { expire: 0 });
 
-    console.log('Revalidated path:', path, 'tags:', ['storyblok', pageTag]);
+    console.log('Revalidated path:', path, 'tag:', pageTag);
 
     return NextResponse.json({ revalidated: true, path, timestamp: Date.now() });
   } catch (err) {
