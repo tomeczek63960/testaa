@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { revalidatePath, revalidateTag } from "next/cache";
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
@@ -27,10 +29,17 @@ export async function POST(req: NextRequest) {
 
 
     // 4. Revalidate the page route and Storyblok data cache
-    revalidatePath(path);
+    revalidatePath(path, 'page');
+    revalidatePath(path, 'layout');
     revalidateTag('storyblok', { expire: 0 });
 
-    return NextResponse.json({ revalidated: true, path });
+    // Also revalidate specific page tag
+    const pageTag = slug === 'home' ? 'storyblok-home' : `storyblok-${slug}`;
+    revalidateTag(pageTag, { expire: 0 });
+
+    console.log('Revalidated path:', path, 'tags:', ['storyblok', pageTag]);
+
+    return NextResponse.json({ revalidated: true, path, timestamp: Date.now() });
   } catch (err) {
     return NextResponse.json({ message: "Error", error: err }, { status: 500 });
   }

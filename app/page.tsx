@@ -1,9 +1,9 @@
 import { getStoryblokApi } from './lib/storyblok';
 import { StoryblokStory } from '@storyblok/react/rsc';
+import { unstable_cache } from 'next/cache';
 
-export const revalidate = false;
 export default async function Home() {
-  const { data } = await fetchData();
+  const data = await fetchData();
 
   return (
     <div className="page">
@@ -12,9 +12,12 @@ export default async function Home() {
   );
 }
 
-export async function fetchData() {
-  const storyblokApi = getStoryblokApi();
-  const res = await storyblokApi.get(`cdn/stories/home`, { version: 'published' }
-  )
-  return res;
-}
+const fetchData = unstable_cache(
+  async () => {
+    const storyblokApi = getStoryblokApi();
+    const res = await storyblokApi.get(`cdn/stories/home`, { version: 'published' });
+    return res.data;
+  },
+  ['storyblok-home'],
+  { tags: ['storyblok', 'storyblok-home'] }
+);
